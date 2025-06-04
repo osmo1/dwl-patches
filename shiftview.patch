@@ -28,9 +28,9 @@ index 9009517..8d77ec0 100644
  	{ MODKEY,                    XKB_KEY_Tab,        view,           {0} },
 +	{ MODKEY,                    XKB_KEY_a,          shiftview,      { .i = -1 } },
 +	{ MODKEY,                    XKB_KEY_semicolon,  shiftview,      { .i = 1 } },
+	{ MODKEY,                    XKB_KEY_g,          togglegaps,     {0} },
  	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_C,          killclient,     {0} },
  	{ MODKEY,                    XKB_KEY_t,          setlayout,      {.v = &layouts[0]} },
- 	{ MODKEY,                    XKB_KEY_f,          setlayout,      {.v = &layouts[1]} },
 diff --git a/shiftview.c b/shiftview.c
 new file mode 100644
 index 0000000..fa53db0
