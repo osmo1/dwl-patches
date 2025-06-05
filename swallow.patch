@@ -104,6 +104,7 @@ index def2562..71d500a 100644
  	int isfloating, isurgent, isfullscreen;
 +	int isterm, noswallow;
  	uint32_t resize; /* configure serial of a pending resize */
+  float cweight;
 -} Client;
 +	pid_t pid;
 +	Client *swallowing;  /* client being hidden */
