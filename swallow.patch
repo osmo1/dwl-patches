@@ -112,7 +112,7 @@ index def2562..71d500a 100644
 +};
  
  typedef struct {
- 	uint32_t mod;
+ 	 uint32_t mod;
 @@ -230,6 +236,8 @@ typedef struct {
  	const char *title;
  	uint32_t tags;
