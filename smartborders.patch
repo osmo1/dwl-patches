@@ -31,7 +31,7 @@ diff --git a/dwl.c b/dwl.c
 index 9021e442..67714759 100644
 --- a/dwl.c
 +++ b/dwl.c
-@@ -339,7 +339,7 @@ static void rendermon(struct wl_listener *listener, void *data);
+@@ -339,7 +339,7 @@
  static void requestdecorationmode(struct wl_listener *listener, void *data);
  static void requeststartdrag(struct wl_listener *listener, void *data);
  static void requestmonstate(struct wl_listener *listener, void *data);
@@ -200,5 +200,6 @@ index 9021e442..67714759 100644
  	} else {
  		arrange(c->mon);
  	}
---
+-- 
 2.48.0
+
