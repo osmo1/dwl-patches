@@ -70,10 +70,10 @@ index 22d2171..42342f1 100644
  	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright, tag,            {.ui = ~0} },
  	{ MODKEY,                    XKB_KEY_comma,      focusmon,       {.i = WLR_DIRECTION_LEFT} },
 diff --git a/dwl.c b/dwl.c
-index def2562..71d500a 100644
+index 695245a..3c8ac9c 100644
 --- a/dwl.c
 +++ b/dwl.c
-@@ -73,12 +73,13 @@
+@@ -74,12 +74,13 @@
  #define MAX(A, B)               ((A) > (B) ? (A) : (B))
  #define MIN(A, B)               ((A) < (B) ? (A) : (B))
  #define CLEANMASK(mask)         (mask & ~WLR_MODIFIER_CAPS)
@@ -88,7 +88,7 @@ index def2562..71d500a 100644
  
  /* enums */
  enum { CurNormal, CurPressed, CurMove, CurResize }; /* cursor */
-@@ -104,7 +105,8 @@ typedef struct {
+@@ -114,7 +115,8 @@ typedef struct {
  } Gesture;
  
  typedef struct Monitor Monitor;
@@ -110,10 +110,11 @@ index def2562..71d500a 100644
 +	Client *swallowing;  /* client being hidden */
 +	Client *swallowedby;
 +};
++ 
  
  typedef struct {
  	uint32_t mod;
-@@ -230,6 +236,8 @@ typedef struct {
+@@ -242,6 +249,8 @@ typedef struct {
  	const char *title;
  	uint32_t tags;
  	int isfloating;
@@ -122,7 +123,7 @@ index def2562..71d500a 100644
  	int monitor;
  } Rule;
  
-@@ -311,6 +319,7 @@ static void moveresize(const Arg *arg);
+@@ -333,6 +342,7 @@ static void moveresize(const Arg *arg);
  static void outputmgrapply(struct wl_listener *listener, void *data);
  static void outputmgrapplyortest(struct wlr_output_configuration_v1 *config, int test);
  static void outputmgrtest(struct wl_listener *listener, void *data);
@@ -130,7 +131,7 @@ index def2562..71d500a 100644
  static void pointerfocus(Client *c, struct wlr_surface *surface,
  		double sx, double sy, uint32_t time);
  static void printstatus(void);
-@@ -335,11 +344,15 @@ static void setsel(struct wl_listener *listener, void *data);
+@@ -358,11 +368,15 @@ static void setsel(struct wl_listener *listener, void *data);
  static void setup(void);
  static void spawn(const Arg *arg);
  static void startdrag(struct wl_listener *listener, void *data);
@@ -146,7 +147,7 @@ index def2562..71d500a 100644
  static void togglegaps(const Arg *arg);
  static void toggletag(const Arg *arg);
  static void toggleview(const Arg *arg);
-@@ -466,11 +479,15 @@ applyrules(Client *c)
+@@ -497,11 +511,15 @@ applyrules(Client *c)
  	if (!(title = client_get_title(c)))
  		title = broken;
  
@@ -162,7 +163,7 @@ index def2562..71d500a 100644
  			i = 0;
  			wl_list_for_each(m, &mons, link) {
  				if (r->monitor == i++)
-@@ -478,6 +495,12 @@ applyrules(Client *c)
+@@ -509,6 +527,12 @@ applyrules(Client *c)
  			}
  		}
  	}
@@ -175,7 +176,7 @@ index def2562..71d500a 100644
  	setmon(c, mon, newtags);
  }
  
-@@ -2006,6 +2029,20 @@ outputmgrtest(struct wl_listener *listener, void *data)
+@@ -2244,6 +2268,20 @@ outputmgrtest(struct wl_listener *listener, void *data)
  	outputmgrapplyortest(config, 1);
  }
  
@@ -196,7 +197,7 @@ index def2562..71d500a 100644
  void
  pointerfocus(Client *c, struct wlr_surface *surface, double sx, double sy,
  		uint32_t time)
-@@ -2326,7 +2363,7 @@ setfullscreen(Client *c, int fullscreen)
+@@ -2580,7 +2618,7 @@ setfullscreen(Client *c, int fullscreen)
  	c->isfullscreen = fullscreen;
  	if (!c->mon || !client_surface(c)->mapped)
  		return;
@@ -205,7 +206,7 @@ index def2562..71d500a 100644
  	client_set_fullscreen(c, fullscreen);
  	wlr_scene_node_reparent(&c->scene->node, layers[c->isfullscreen
  			? LyrFS : c->isfloating ? LyrFloat : LyrTile]);
-@@ -2404,6 +2441,9 @@ setmon(Client *c, Monitor *m, uint32_t newtags)
+@@ -2664,6 +2702,9 @@ setmon(Client *c, Monitor *m, uint32_t newtags)
  		setfloating(c, c->isfloating);
  	}
  	focusclient(focustop(selmon), 1);
@@ -215,7 +216,7 @@ index def2562..71d500a 100644
  }
  
  void
-@@ -2669,6 +2709,44 @@ startdrag(struct wl_listener *listener, void *data)
+@@ -2939,6 +2980,44 @@ startdrag(struct wl_listener *listener, void *data)
  	LISTEN_STATIC(&drag->icon->events.destroy, destroydragicon);
  }
  
@@ -260,7 +261,7 @@ index def2562..71d500a 100644
  void
  tag(const Arg *arg)
  {
-@@ -2690,6 +2768,40 @@ tagmon(const Arg *arg)
+@@ -2960,6 +3039,40 @@ tagmon(const Arg *arg)
  		setmon(sel, dirtomon(arg->i), 0);
  }
  
@@ -301,8 +302,8 @@ index def2562..71d500a 100644
  void
  tile(Monitor *m)
  {
-@@ -2741,6 +2853,32 @@ togglefullscreen(const Arg *arg)
- 		setfullscreen(sel, !sel->isfullscreen);
+@@ -3048,6 +3161,32 @@ togglegaps(const Arg *arg)
+ 	arrange(selmon);
  }
  
 +void
@@ -334,7 +335,7 @@ index def2562..71d500a 100644
  void
  toggletag(const Arg *arg)
  {
-@@ -2801,6 +2939,12 @@ unmapnotify(struct wl_listener *listener, void *data)
+@@ -3108,6 +3247,12 @@ unmapnotify(struct wl_listener *listener, void *data)
  		grabc = NULL;
  	}
  
@@ -347,6 +348,3 @@ index def2562..71d500a 100644
  	if (client_is_unmanaged(c)) {
  		if (c == exclusive_focus) {
  			exclusive_focus = NULL;
--- 
-2.49.0
-
