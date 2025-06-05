@@ -98,13 +98,13 @@ index def2562..71d500a 100644
  	/* Must keep these three elements in this order */
  	unsigned int type; /* XDGShell or X11* */
  	struct wlr_box geom; /* layout-relative, includes border */
-@@ -140,8 +142,12 @@ typedef struct {
+@@ -150,9 +152,14 @@ typedef struct {
  	unsigned int bw;
  	uint32_t tags;
  	int isfloating, isurgent, isfullscreen;
 +	int isterm, noswallow;
  	uint32_t resize; /* configure serial of a pending resize */
-  float cweight;
+ 	float cweight;
 -} Client;
 +	pid_t pid;
 +	Client *swallowing;  /* client being hidden */
@@ -112,7 +112,7 @@ index def2562..71d500a 100644
 +};
  
  typedef struct {
- 	 uint32_t mod;
+ 	uint32_t mod;
 @@ -230,6 +236,8 @@ typedef struct {
  	const char *title;
  	uint32_t tags;
