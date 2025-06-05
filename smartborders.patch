@@ -50,15 +50,15 @@ index 9c2298a..0fd8d6c 100644
  			setmon(c, selmon, c->tags);
  	}
 @@ -1074,7 +1074,11 @@ commitnotify(struct wl_listener *listener, void *data)
- 		return;
  	}
  
--	resize(c, c->geom, (c->isfloating && !c->isfullscreen));
-+	if (client_surface(c)->mapped && c->mon && c->mon->lt[c->mon->sellt]->arrange
-+					&& !c->isfullscreen && !c->isfloating)
-+			c->mon->lt[c->mon->sellt]->arrange(c->mon);
-+	else
-+			resize(c, c->geom, (c->isfloating && !c->isfullscreen), (c->isfloating && !c->isfullscreen));
+ 	if (client_surface(c)->mapped && c->mon)
+-	    resize(c, c->geom, (c->isfloating && !c->isfullscreen));
++	        if (client_surface(c)->mapped && c->mon && c->mon->lt[c->mon->sellt]->arrange
++					        && !c->isfullscreen && !c->isfloating)
++			        c->mon->lt[c->mon->sellt]->arrange(c->mon);
++	        else
++			        resize(c, c->geom, (c->isfloating && !c->isfullscreen), (c->isfloating && !c->isfullscreen));
  
  	/* mark a pending resize as completed */
  	if (c->resize && c->resize <= c->surface.xdg->current.configure_serial)
