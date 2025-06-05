@@ -89,7 +89,7 @@ index def2562..71d500a 100644
  /* enums */
  enum { CurNormal, CurPressed, CurMove, CurResize }; /* cursor */
 @@ -104,7 +105,8 @@ typedef struct {
- } Button;
+ } Gesture;
  
  typedef struct Monitor Monitor;
 -typedef struct {
@@ -142,9 +142,9 @@ index def2562..71d500a 100644
  static void togglefullscreen(const Arg *arg);
 +static void toggleswallow(const Arg *arg);
 +static void toggleautoswallow(const Arg *arg);
+ static void togglegaps(const Arg *arg);
  static void toggletag(const Arg *arg);
  static void toggleview(const Arg *arg);
- static void unlocksession(struct wl_listener *listener, void *data);
 @@ -466,11 +479,15 @@ applyrules(Client *c)
  	if (!(title = client_get_title(c)))
  		title = broken;
